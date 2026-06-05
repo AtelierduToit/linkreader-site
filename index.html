@@ -247,6 +247,16 @@
         footer a:hover { color: var(--text); }
         .footer-links { display: flex; gap: 24px; }
 
+        /* Safari extension section */
+        .safari {
+            background: rgba(124,106,247,0.05);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 80px 24px;
+        }
+        .safari-inner { max-width: 700px; margin: 0 auto; text-align: center; }
+        .safari-sub { color: var(--muted); font-size: 1rem; max-width: 520px; margin: 0 auto; }
+
         @media (max-width: 600px) {
             nav { padding: 16px 20px; }
             .nav-links { display: none; }
@@ -301,7 +311,7 @@
         <div class="feature-card">
             <div class="feature-icon">🎧</div>
             <h3>Natural-sounding audio</h3>
-            <p>Powered by OpenAI TTS or OpenVox on Mac. High-quality voices that don't sound robotic.</p>
+            <p>Powered by OpenAI TTS or <a href="https://openvox.app" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none;">OpenVox</a> on Mac — high-quality voices generated entirely on your own devices.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">☁️</div>
@@ -323,6 +333,52 @@
             <h3>Edit &amp; regenerate</h3>
             <p>If an article pulls in ads or duplicate text, edit it directly and regenerate the audio with one tap.</p>
         </div>
+        <div class="feature-card">
+            <div class="feature-icon">🧩</div>
+            <h3>Safari Extension</h3>
+            <p>Send any article to LinkReader with one tap from Safari on iPhone or Mac — no copy-pasting URLs. Enable it once in Safari settings and it's always there.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Safari Extension -->
+<section class="safari" id="safari">
+    <div class="safari-inner">
+        <p class="section-label">Safari Extension</p>
+        <h2 class="section-title">One tap from any page</h2>
+        <p class="safari-sub">The LinkReader Safari extension is included free with the app. Enable it once and send articles to your queue from anywhere on the web.</p>
+        <div class="steps" style="max-width:600px;margin:48px auto 0;text-align:left;">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div>
+                    <h4>iPhone — enable in Settings</h4>
+                    <p>Go to <strong>Settings → Safari → Extensions</strong>, find LinkReader, and turn it on. Grant access to all websites when prompted.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div>
+                    <h4>Mac — enable in Safari Preferences</h4>
+                    <p>Open Safari → <strong>Settings → Extensions</strong>, tick LinkReader, and allow it to read pages you visit.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div>
+                    <h4>Send any article instantly</h4>
+                    <p>On iPhone tap the <strong>Share button → LinkReader</strong>. On Mac click the <strong>LinkReader toolbar icon</strong>. The article is queued and audio generation begins.</p>
+                </div>
+            </div>
+        </div>
+        <div class="download-row" style="margin-top:40px;">
+            <a href="https://apps.apple.com/app/linkreader/id6743720927" class="dl-btn" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                <div class="btn-label">
+                    <span class="btn-sub">Includes Safari Extension</span>
+                    Download LinkReader
+                </div>
+            </a>
+        </div>
     </div>
 </section>
 
@@ -342,7 +398,7 @@
             <div class="step-num">2</div>
             <div>
                 <h4>Add your OpenAI API key (iPhone) or install OpenVox (Mac)</h4>
-                <p>Paste your OpenAI key in Settings for iPhone audio generation. On Mac, install OpenVox to generate audio locally at no per-article cost.</p>
+                <p>Paste your OpenAI key in Settings for iPhone audio generation. On Mac, install <a href="https://openvox.app" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none;">OpenVox</a> to generate audio locally at no per-article cost.</p>
             </div>
         </div>
         <div class="step">
