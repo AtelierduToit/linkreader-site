@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkReader — Listen to any article</title>
+    <meta name="description" content="Save any web article and listen to it on your iPhone, Mac, or in CarPlay. Your content, your iCloud, no subscriptions.">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #13131a;
+            --border: rgba(255,255,255,0.08);
+            --accent: #7c6af7;
+            --accent2: #a78bfa;
+            --text: #f0f0f5;
+            --muted: #8e8e9a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Nav */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(10,10,15,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+        .nav-logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 28px; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 100px 24px 80px;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(124,106,247,0.15);
+            color: var(--accent2);
+            border: 1px solid rgba(124,106,247,0.3);
+            border-radius: 100px;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+        h1 {
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #fff 30%, var(--accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--muted);
+            max-width: 540px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+
+        /* Download buttons */
+        .download-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+        .dl-btn:hover {
+            background: rgba(124,106,247,0.12);
+            border-color: rgba(124,106,247,0.4);
+            transform: translateY(-2px);
+        }
+        .dl-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+        .dl-btn .btn-sub { font-size: 0.72rem; font-weight: 400; color: var(--muted); display: block; line-height: 1; }
+        .dl-btn .btn-label { display: flex; flex-direction: column; gap: 3px; }
+
+        /* Features */
+        .features {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 24px;
+        }
+        .section-label {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 16px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 60px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+        }
+        .feature-icon {
+            font-size: 1.8rem;
+            margin-bottom: 14px;
+        }
+        .feature-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* How it works */
+        .how {
+            max-width: 700px;
+            margin: 80px auto;
+            padding: 0 24px;
+            text-align: center;
+        }
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 48px;
+            text-align: left;
+        }
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .step:last-child { border-bottom: none; }
+        .step-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(124,106,247,0.15);
+            border: 1px solid rgba(124,106,247,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent2);
+            flex-shrink: 0;
+        }
+        .step h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+        .step p { font-size: 0.9rem; color: var(--muted); }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 80px 24px 100px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .cta h2 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            margin-bottom: 16px;
+        }
+        .cta p {
+            color: var(--muted);
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        footer p { font-size: 0.85rem; color: var(--muted); }
+        footer a { color: var(--muted); text-decoration: none; font-size: 0.85rem; }
+        footer a:hover { color: var(--text); }
+        .footer-links { display: flex; gap: 24px; }
+
+        @media (max-width: 600px) {
+            nav { padding: 16px 20px; }
+            .nav-links { display: none; }
+            footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo">LinkReader</a>
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="privacy-policy.html">Privacy</a>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">Available on iPhone &amp; Mac</div>
+    <h1>Your reading list,<br>finally heard</h1>
+    <p class="hero-sub">Save any web article and listen to it on your iPhone, Mac, or in CarPlay. Your content stays in your private iCloud — no subscriptions, no servers, no ads.</p>
+    <div class="download-row">
+        <a href="https://apps.apple.com/app/linkreader/id6743720927" class="dl-btn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <div class="btn-label">
+                <span class="btn-sub">Download on the</span>
+                App Store — iPhone
+            </div>
+        </a>
+        <a href="https://apps.apple.com/app/linkreader/id6743720927" class="dl-btn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <div class="btn-label">
+                <span class="btn-sub">Download on the</span>
+                Mac App Store
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features" id="features">
+    <p class="section-label">What you get</p>
+    <h2 class="section-title">Everything in one place</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">📰</div>
+            <h3>Save any article</h3>
+            <p>Share a link from Safari or any browser. LinkReader fetches the full text, strips the noise, and queues it for audio.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎧</div>
+            <h3>Natural-sounding audio</h3>
+            <p>Powered by OpenAI TTS or OpenVox on Mac. High-quality voices that don't sound robotic.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">☁️</div>
+            <h3>Private iCloud sync</h3>
+            <p>Articles, audio, and notes sync across your iPhone and Mac via your own private CloudKit database. We never see your data.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🚗</div>
+            <h3>CarPlay support</h3>
+            <p>Browse your article list and play audio hands-free. Flag interesting moments while driving to revisit later.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📍</div>
+            <h3>Notes &amp; markers</h3>
+            <p>Tap the flag button while listening to mark important moments. Add written notes — they're pinned to the exact spot in the article text.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">✏️</div>
+            <h3>Edit &amp; regenerate</h3>
+            <p>If an article pulls in ads or duplicate text, edit it directly and regenerate the audio with one tap.</p>
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section class="how" id="how">
+    <p class="section-label">Getting started</p>
+    <h2 class="section-title">Up and running in minutes</h2>
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div>
+                <h4>Download &amp; sign in with iCloud</h4>
+                <p>Install LinkReader on your iPhone or Mac. No account needed — it uses your existing Apple ID and iCloud.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div>
+                <h4>Add your OpenAI API key (iPhone) or install OpenVox (Mac)</h4>
+                <p>Paste your OpenAI key in Settings for iPhone audio generation. On Mac, install OpenVox to generate audio locally at no per-article cost.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div>
+                <h4>Share an article link to LinkReader</h4>
+                <p>In Safari, tap Share → LinkReader. The article is fetched, processed, and ready to listen to — usually in under a minute.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <div>
+                <h4>Listen anywhere</h4>
+                <p>Play on your iPhone, Mac, AirPods, or through CarPlay. Pick up exactly where you left off across devices.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <h2>Start listening today</h2>
+    <p>Free to download. No subscription. Your content, your iCloud.</p>
+    <div class="download-row">
+        <a href="https://apps.apple.com/app/linkreader/id6743720927" class="dl-btn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <div class="btn-label">
+                <span class="btn-sub">Download on the</span>
+                App Store
+            </div>
+        </a>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Atelier du Toit. All rights reserved.</p>
+    <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="https://atelierdutoit.substack.com" target="_blank" rel="noopener">Updates</a>
+    </div>
+</footer>
+
+</body>
+</html>
